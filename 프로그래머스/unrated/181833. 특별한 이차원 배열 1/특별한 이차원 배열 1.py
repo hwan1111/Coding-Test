@@ -1,3 +1,2 @@
-import numpy as np
 def solution(n):
-    return np.eye(n).tolist()
+    return [[1 if i == j else 0 for i in range(n)] for j in range(n)]
