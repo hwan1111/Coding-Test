@@ -2,46 +2,49 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+N, M = map(int, input().split())
 r, c, d = map(int, input().split())
-graph = [list(map(int, input().split())) for _ in range(n)]
-visited = [[0 for _ in range(m)] for _ in range(n)]
+graph = []
+for _ in range(N):
+    graph.append(list(map(int, input().split())))
+
+visited = [[False for _ in range(M)] for _ in range(N)]
 cnt = 0
 
 dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
 
-def bfs(i, j, d):
+def BFS(i, j, d):
     global cnt
     queue = deque()
-    queue.append((i, j)) # 로봇 위치
+    queue.append((i, j))
     visited[i][j] = 1
     cnt += 1
 
     while queue:
         x, y = queue.popleft()
-        flag = 0
+        clean = 0
 
-        for _ in range(4): # 반시계 방향으로 돌려감
-            d = (d + 3) % 4
+        for _ in range(4):
+            d = (d + 3) % 4 
             nx = x + dx[d]
             ny = y + dy[d]
 
-            if 0 <= nx < n and 0 <= ny < m and not graph[nx][ny]: 
-                if not visited[nx][ny]:
-                    visited[nx][ny] = 1  
+            if 0 <= nx < N and 0 <= ny < M and graph[nx][ny] == 0:
+                if visited[nx][ny] is False:
+                    visited[nx][ny] = True
                     queue.append((nx, ny))
                     cnt += 1
-                    flag = 1 # 반시계 방향으로 돌아갔을 때 빈칸이 있다는 것을 의미
+                    clean = 1   #반시계 방향으로 회전시 빈칸이 있다는 의미
+
                     break
 
-
-        if flag == 0: # 청소할 곳이 없다면 후진
+        if clean == 0:  #청소할 곳이 없다면 후진
             if graph[x - dx[d]][y - dy[d]] != 1:
                 queue.append((x - dx[d], y - dy[d]))
-
             else:
                 print(cnt)
                 break
 
-bfs(r, c, d)
+
+BFS(r, c, d)
