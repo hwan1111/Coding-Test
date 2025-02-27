@@ -1,3 +1,7 @@
 def solution(n):
-    n = str(n)
-    return sum(int(n[i]) for i in range(len(n)))
+    answer = 0
+    while n > 0:
+        answer += n%10
+        n //= 10
+
+    return answer
