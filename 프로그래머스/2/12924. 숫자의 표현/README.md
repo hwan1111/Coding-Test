@@ -63,3 +63,13 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+----
+🛠️ 접근 방식
+* 연속된 자연수들의 합을 구하기 위해 투 포인터(left, right) 기법 적용
+* `left`는 시작점, `right`는 끝점
+* `cnt`는 현재 연속된 수들의 합
+* `cnt < n`이면 `right`를 증가시켜 합을 키우고, `cnt > n`이면 `left`를 증가시켜 합을 줄임
+* `cnt == n`이면 정답 카운트를 증가
+---
+⌛시간 복잡도 분석
+* `left`와 `right` 포인터가 모두 `n`까지 이동하므로 **O(N)**
