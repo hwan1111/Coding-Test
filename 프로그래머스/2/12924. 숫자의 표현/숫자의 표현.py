@@ -1,15 +1,6 @@
 def solution(n):
     answer = 0
-    left, right, cnt = 0, 0, 0
-
-    while left < n:
-        if cnt < n:
-            right += 1
-            cnt += right
-        else:
-            if n == cnt:
-                answer += 1
-            left += 1
-            cnt -= left
-    
+    for i in range(1, n+1, 2):  # n의 홀수 약수 개수 구하기
+        if n % i == 0:
+            answer += 1
     return answer
