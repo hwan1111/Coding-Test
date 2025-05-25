@@ -1,4 +1,8 @@
-SELECT FH.FLAVOR
-FROM FIRST_HALF AS FH
-JOIN ICECREAM_INFO AS II ON FH.FLAVOR = II.FLAVOR
-WHERE FH.TOTAL_ORDER >= 3000 AND II.INGREDIENT_TYPE = 'fruit_based';
+select flavor
+from first_half fh
+where total_order >= 3000
+    and flavor in (
+        select flavor
+        from icecream_info
+        where ingredient_type = 'fruit_based'
+    );
