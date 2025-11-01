@@ -24,3 +24,11 @@ def solution(number, limit,	power):
         answer += d if d <= limit else power
     
     return answer
+
+
+def solution2(number, limit, power):
+    div = [0] * (number + 1)
+    for i in range(1, number + 1):
+        for j in range(i, number + 1, i):
+            div[j] += 1
+    return sum(d if d <= limit else power for d in div[1:])
