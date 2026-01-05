@@ -12,9 +12,9 @@ def is_prime(n):
         i += 1
     return True
 
-n = int(input())
+n = int(sys.stdin.readline())
 for _ in range(n):
-    x = int(input())
+    x = int(sys.stdin.readline().strip())
     while True:
         if is_prime(x):
             print(x)
