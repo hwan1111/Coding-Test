@@ -1,6 +1,8 @@
 # 1929
 # 소수 구하기
 
+import sys
+
 def is_prime(n):
     if n < 2:
         return False
@@ -12,9 +14,9 @@ def is_prime(n):
     return True
 
 def solve():
-    m, n = map(int, input().split())
+    m, n = map(int, sys.stdin.readline().split())
     for i in range(m, n+1):
         if is_prime(i) is True:
-            print(i)
+            sys.stdout.write(f'{i}\n')
 
 solve()
