@@ -1,8 +1,8 @@
 def solution(phone_book):
-    prefixes = set(phone_book)
-    for number in phone_book:
-        for i in range(1, len(number)):
-            prefix = number[:i]
-            if prefix in prefixes:
-                return False
+    phone_book.sort()
+    
+    for i in range(len(phone_book) - 1):
+        if phone_book[i + 1].startswith(phone_book[i]):
+            return False
+            
     return True
