@@ -2,8 +2,8 @@ from itertools import permutations
 
 def solution(k, dungeons):
     answer = 0
-    lst = list(permutations(dungeons))
-    for posible_order in lst:
+    dungeons = list(permutations(dungeons))
+    for posible_order in dungeons:
         count = 0
         curr_k = k
         for min_fatigue, exhaustion_fatigue in posible_order:
