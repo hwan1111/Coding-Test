@@ -1,33 +1,36 @@
-# 1. ICN에서 출발하는 항공편이 여러 개라면 tickets[0][i] 가 알파벳 순서로 정렬되어야 함.
-# 2. 루트노드는 무조건 'ICN'
-# 3. 깊이우선으로 간다.
-# 4. 공항 수가 10,000개 이기 때문에 O(N^2)이면 못푼다.
-
 def solution(tickets):
-    tickets.sort(key=lambda x: x[1])
+    # 1. 모든 티켓을 알파벳 순으로 정렬 (그래야 처음 찾은 경로가 정답이 됨)
+    tickets.sort()
     
+    # 티켓 사용 여부를 체크할 리스트 (원래 코드에는 없던 부분)
     visited = [False] * len(tickets)
     
-    def dfs(now, path):
-        if len(path) == len(tickets) + 1:
-            return path
+    # 정답을 담을 리스트 (처음은 항상 ICN)
+    answer = ['ICN']
+    
+    def dfs(current_airport):
+        # 모든 티켓을 다 썼다면 성공! (티켓 수 + 1이 경로의 길이)
+        if len(answer) == len(tickets) + 1:
+            return True
         
-        # 순회하며 다음 목적지 찾기
+        # 원래 코드의 index() 대신, 전체 티켓을 돌며 조건에 맞는 티켓 탐색
         for idx, ticket in enumerate(tickets):
-            # 아직 안 쓴 티켓, 출발지가 현재 위치
-            if visited[idx] is False and ticket[0] == now:
-                visited[idx] = True
-            
-                # 다음 공항으로 이동
-                result = dfs(ticket[1], path + [ticket[1]])
+            # 아직 안 쓴 티켓이고, 현재 공항에서 출발하는 티켓이라면
+            if not visited[idx] and ticket[0] == current_airport:
+                visited[idx] = True   # 티켓 사용 처리
+                answer.append(ticket[1]) # 경로에 추가
                 
-                # 만약 이 길로 가서 정답을 찾았다면 그대로 반환
-                if result:
-                    return result
+                # 다음 목적지로 이동 (재귀)
+                if dfs(ticket[1]):
+                    return True # 성공하면 쭉 올라가며 종료
                 
-                # 정답을 못찾았다면 막다른길, 티켓 사용 취소
-                visited[idx] = False
+                # [중요] 여기가 백트래킹! 만약 이 길로 가서 실패했다면?
+                visited[idx] = False  # 티켓 사용 취소
+                answer.pop()          # 경로에서 제거
         
-        return None
+        return False
 
-    return dfs('ICN', ['ICN'])
+    # ICN에서 시작
+    dfs('ICN')
+    
+    return answer
