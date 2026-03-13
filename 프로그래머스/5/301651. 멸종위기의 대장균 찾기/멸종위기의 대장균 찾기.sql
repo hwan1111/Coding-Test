@@ -1,0 +1,26 @@
+WITH RECURSIVE GENERATIONS AS (
+    -- 1. Base Case: 1세대 대장균 (부모가 없는 개체)
+    SELECT ID, PARENT_ID, 1 AS GENERATION
+    FROM ECOLI_DATA
+    WHERE PARENT_ID IS NULL
+
+    UNION ALL
+
+    -- 2. Recursive Case: 자식 세대 추적 (부모의 세대 + 1)
+    SELECT e.ID, e.PARENT_ID, g.GENERATION + 1
+    FROM ECOLI_DATA e
+    INNER JOIN GENERATIONS g ON e.PARENT_ID = g.ID
+)
+-- 3. 자식이 없는 개체 필터링 및 세대별 집계
+SELECT 
+    COUNT(*) AS COUNT, 
+    GENERATION
+FROM GENERATIONS g
+WHERE g.ID NOT IN (
+    -- 다른 개체의 부모로 등록된 ID들을 제외 (자식이 있는 개체들)
+    SELECT PARENT_ID 
+    FROM ECOLI_DATA 
+    WHERE PARENT_ID IS NOT NULL
+)
+GROUP BY GENERATION
+ORDER BY GENERATION;
